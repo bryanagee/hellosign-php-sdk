@@ -30,7 +30,20 @@ use HelloSign\Client;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Client
+     */
     protected $client;
+
+    /**
+     * @var string Randomly generated email address
+     */
+    protected $team_member_1;
+
+    /**
+     * @var string Randomly generated email address
+     */
+    protected $team_member_2;
 
     protected function setUp()
     {
@@ -47,14 +60,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         }
 
 
-        $api_url = $_ENV['API_URL'] == null ? Client::API_URL : $_ENV['API_URL'];
+        $api_url         = $_ENV['API_URL'] == null ? Client::API_URL : $_ENV['API_URL'];
         $oauth_token_url = $_ENV['OAUTH_TOKEN_URL'] == null ? Client::OAUTH_TOKEN_URL : $_ENV['OAUTH_TOKEN_URL'];
+
         $this->client = new Client($_ENV['API_KEY'], null, $api_url, $oauth_token_url);
-        $this->team_member_1 = rand(1, 10000000) . "@example.com";
-        $this->team_member_2 = rand(1, 10000000) . "@example.com";
+
+        $this->team_member_1 = mt_rand(1, 10000000) . "@example.com";
+        $this->team_member_2 = mt_rand(1, 10000000) . "@example.com";
         // $this->client->enableDebugMode();
       
-        if ($api_url != Client::API_URL) {
+        if ($api_url !== Client::API_URL) {
             $this->client->disableCertificateCheck();
         }
         
